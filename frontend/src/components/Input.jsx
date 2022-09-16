@@ -2,9 +2,11 @@ import { useState } from "react";
 import { useAuthContext } from "../hooks/useAuthContext";
 import { useEntryContext } from "../hooks/useEntryContext";
 import {useParams} from "react-router-dom"
+import { useCommentContext } from "../hooks/useCommentContext";
 function Input() {
      const { user } = useAuthContext();
      const { dispatch } = useEntryContext();
+     const {comments, dispatch: commentsDispatch} = useCommentContext()
      const [userPost, setUserPost] = useState({
           start: "",
           end: "",
@@ -55,9 +57,12 @@ function Input() {
                body: JSON.stringify({ text, postId }),
           });
           const data = await res.json();
-          setUserPost({
-               text: "",
-          });
+          if(res.ok){
+               commentsDispatch({type: "CREATE_COMMENT", payload: data})
+               setUserPost({
+                    text: "",
+               });
+          }
      };
      return (
           <div className="p-2 mb-5">
