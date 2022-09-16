@@ -4,11 +4,13 @@ import Feed from '../components/Feed';
 import Posts from '../components/Posts';
 import { useAuthContext } from '../hooks/useAuthContext';
 import { useEntryContext } from '../hooks/useEntryContext';
+import {useCommentContext} from "../hooks/useCommentContext"
 import Input from '../components/Input';
 function SoloPost() {
      const postId = useParams().postId
      const {user} = useAuthContext()
      const {entries, dispatch} = useEntryContext()
+     const {comments: commentsState, dispatch: commentsDispatch} = useCommentContext()
      const [comments, setComments] = useState([])
 
      const getPost = async () => {
@@ -27,7 +29,8 @@ function SoloPost() {
         });
         const data = await res.json();
         if (res.ok) {
-          setComments(data)
+          // setComments(data)
+          commentsDispatch({type: "GET_COMMENTS", payload: data})
         }
       };
     
@@ -36,7 +39,7 @@ function SoloPost() {
         getComments()
       }, [postId]);
 
-      console.log(comments)
+      console.log(commentsState)
 
      return (
          <div className='w-[50%] max-h-screen p-5 border overflow-scroll scrollbar-hide'>
@@ -50,7 +53,7 @@ function SoloPost() {
                     <Input />
             <div>
                 <h2>Comments</h2>
-                  {comments && comments.map(comment => {
+                  {commentsState && commentsState.map(comment => {
                     return (
                         <Posts key={comment._id} entry={comment} />
                         )
