@@ -7,7 +7,7 @@ const entrySchema = new mongoose.Schema(
           text: { type: String, required: true },
           likes: { type: Array, requried: true, default: [] },
           liked: { type: Boolean, required: true, default: false },
-          user_id: { type: String, requried: true },
+          user_id: { type: mongoose.Schema.Types.ObjectId, requried: "User" },
           user_username: {type: String, required: true},
           user_profilePicture: {type: String, required: true}
      },
