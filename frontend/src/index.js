@@ -4,13 +4,16 @@ import "./index.css";
 import App from "./App";
 import { AuthContextProvider } from "./context/AuthContext";
 import { EntryContextProvider } from "./context/EntryContext";
+import { CommentContextProvider } from "./context/CommentContext";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
      <React.StrictMode>
           <AuthContextProvider>
                <EntryContextProvider>
-                    <App />
+                    <CommentContextProvider>
+                         <App />
+                    </CommentContextProvider>
                </EntryContextProvider>
           </AuthContextProvider>
      </React.StrictMode>
