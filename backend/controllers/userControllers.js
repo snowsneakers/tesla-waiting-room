@@ -69,17 +69,19 @@ const getProfile = async (req, res) => {
 const updateAvatar = async (req, res) => {
      try {
           const result = await cloudinary.uploader.upload(req.body.image, {
-            upload_preset: 'tesla_avatar',
-            public_id: `${req.user._id}avatar`,
-            allowed_formats: ['png', 'jpg', 'jpeg', 'svg', 'ico']
-          }, function(error, result) {if(error){console.log(error)}console.log(result)})
+          folder: "user_avatar",
+            public_id: `${req.user._id}_avatar`,
+            allowed_formats: ['png', 'jpg', 'jpeg', 'svg', 'ico'],
+            overwrite: true,
+            invalidate: true,
+          }, function(error, result) {if(error){throw Error(error)}console.log(result)})
           const user = await User.findById({_id: req.user.id})
           if(!user){
                throw Error("User not found")
           }
 
           const updateUser = await user.updateOne({profilePicture: result.secure_url})
-          res.status(200).json(result.secure_url)
+          res.status(200).json({message: "Avatar updated"})
         } catch (error) {
           res.status(400).json({error: error})
         }
