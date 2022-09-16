@@ -78,7 +78,7 @@ function Feed() {
                                         user.user.followings.includes(entry.user_id) || user.user._id === entry.user_id
                                    )
                                    .map((entry) => {
-                                        return <Posts entry={entry} />;
+                                        return <Posts key={entry._id} entry={entry} />;
                                    })}
                     </div>
                ) : (
